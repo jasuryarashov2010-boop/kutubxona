@@ -53,7 +53,7 @@ class Recommendation(Base):
     author: Mapped[str] = mapped_column(String(140))
     review: Mapped[str] = mapped_column(Text)
     photo_file_id: Mapped[str | None] = mapped_column(String(512), nullable=True)
-    normalized_key: Mapped[str] = mapped_column(String(320), index=True)
+    normalized_key: Mapped[str] = mapped_column(String(320))
     duplicate_of_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
     status: Mapped[str] = mapped_column(String(24), default=RecommendationStatus.PENDING.value, index=True)
     rejection_reason: Mapped[str | None] = mapped_column(Text, nullable=True)
