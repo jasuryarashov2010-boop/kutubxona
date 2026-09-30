@@ -1,0 +1,37 @@
+services:
+  - type: web
+    name: kitobxon-wow-v3
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: '3.13.5'
+      - key: BOT_TOKEN
+        sync: false
+      - key: ADMIN_IDS
+        sync: false
+      - key: BOT_USERNAME
+        sync: false
+      - key: WEBHOOK_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: kitobxon-v3-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: kitobxon-v3-redis
+          property: connectionString
+
+  - type: keyvalue
+    name: kitobxon-v3-redis
+    plan: free
+    ipAllowList: []
+
+databases:
+  - name: kitobxon-v3-db
+    plan: free
