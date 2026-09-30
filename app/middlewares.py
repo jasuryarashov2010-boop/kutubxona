@@ -20,6 +20,9 @@ class ContextMiddleware(BaseMiddleware):
         tg_user = getattr(event, 'from_user', None)
         is_admin = bool(tg_user and tg_user.id in self.settings.admin_ids)
         data['is_admin'] = is_admin
+        if db_user.is_blocked and not is_admin and not is_start:
+    ...
+    return None
         if tg_user and getattr(event, 'chat', None) and getattr(event.chat, 'type', None) == 'private':
             db_user = await self.repo.upsert_user(tg_user.id, tg_user.username, tg_user.full_name)
             data['db_user'] = db_user
